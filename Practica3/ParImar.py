@@ -1,6 +1,8 @@
 while True:
  try:
     numero = (int(input("Introduce un número: ")))
+    if numero <= 0:
+            raise ValueError
     if numero % 2 == 0:
         resultado = "par"
     else:
