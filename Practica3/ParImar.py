@@ -6,5 +6,6 @@ while True:
     else:
         resultado = "impar"
     print(f"El número {numero} es {resultado}.")
+    break
  except ValueError:
     print("Error: Debes ingresar un número entero válido.")
