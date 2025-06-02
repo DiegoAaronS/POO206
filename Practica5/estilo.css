@@ -43,3 +43,14 @@ a {
     color: #007acc;
     text-decoration: none;
 }
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.9em;
+    color: #777;
+}
