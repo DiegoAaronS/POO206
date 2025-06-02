@@ -21,3 +21,16 @@ h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
 }
+
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+section h2 {
+    margin-bottom: 15px;
+    color: #007acc;
+}
