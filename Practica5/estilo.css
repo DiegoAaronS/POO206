@@ -34,3 +34,12 @@ section h2 {
     margin-bottom: 15px;
     color: #007acc;
 }
+
+ul {
+    list-style: inside square;
+}
+
+a {
+    color: #007acc;
+    text-decoration: none;
+}
