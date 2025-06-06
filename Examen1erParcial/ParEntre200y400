@@ -1,0 +1,16 @@
+while True:
+    try:
+        numero = (int(input("Introduce un número par comprendido entre 200 y 400: ")))
+        if numero <= 0:
+            raise ValueError
+        if numero < 200:
+            print("El número debe ser mayor o igual a 200.")
+        if numero > 400:    
+            print("El número debe ser menor o igual a 400.")
+        if numero % 2 == 0:
+            print(", ".join(str(i) for i in range (numero, 401, 2)))
+        else:
+            print("El número debe ser si o si par.")
+        break
+    except ValueError:
+        print("Error: Se debe ingresar si o si un número par comprendido entre 200 y 400.")
