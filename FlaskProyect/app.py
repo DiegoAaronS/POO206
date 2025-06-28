@@ -41,6 +41,19 @@ def detalle(id):
     finally:
         cursor.close()        
 
+@app.route('/actualizar/<int:id>')
+def actualizar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM tb_album WHERE id=%s',(id,))
+        album = cursor.fetchone()
+        return render_template('formUpdate.html', album=album, errores={})
+    except Exception as e:
+        print('Error al cargar álbum para actualizar: '+e)
+        return redirect(url_for('home'))
+    finally:
+        cursor.close()
+
 #Ruta de consulta
 @app.route('/consulta')
 def consulta():
@@ -72,18 +85,51 @@ def guardar():
             cursor = mysql.connection.cursor()
             cursor.execute('INSERT INTO tb_album (album, artista, anio) VALUES (%s, %s, %s)', (Vtitulo, Vartista, Vanio))
             mysql.connection.commit() 
-            flash('Album guardado con exito') 
+            flash('Álbum guardado con éxito') 
             return redirect(url_for('home'))
     
         except Exception as e:
             mysql.connection.rollback()
-            flash('Algo fallo: ' + str(e))
+            flash('Algo falló: ' + str(e))
             return redirect(url_for('home'))
     
         finally:
             cursor.close()
             
     return render_template('formulario.html', errores=errores)    
+
+@app.route('/actualizarAlbum/<int:id>', methods=['POST'])
+def actualizarAlbum(id):
+    errores = {}
+
+    Utitulo = request.form.get('txtTitulo', '').strip()
+    Uartista = request.form.get('txtArtista', '').strip()
+    Uanio = request.form.get('txtAnio', '').strip()
+
+    if not Utitulo:
+        errores['txtTitulo']= 'Nombre del album obligatorio'
+    if not Uartista:
+        errores['txtArtista']= 'Nombre del artista obligatorio'
+    if not Uanio:
+        errores['txtAnio']= 'Año es obligatorio'
+    elif not Uanio.isdigit() or int(Uanio) < 1800 or int(Uanio) > 2100:
+        errores['txtAnio']= 'Ingresa un año válido'
+
+    if errores:
+        return render_template('formUpdate.html',album=(id, Utitulo, Uartista, Uanio),errores=errores)
+
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('UPDATE tb_album SET album = %s, artista = %s, anio = %s WHERE id = %s', (Utitulo, Uartista, Uanio, id))
+        mysql.connection.commit()
+        flash('Álbum actualizado en BD')
+    except Exception as e:
+        mysql.connection.rollback()
+        flash('Algo falló: ' + str(e))
+    finally:
+        cursor.close()
+
+    return redirect(url_for('home'))
 
 #Ruta try-catch
 @app.errorhandler(404)

@@ -6,12 +6,12 @@
     <title>Consulta</title>
 </head>
 <body>
-    <h1 style="color:blue">Detalle de Album</h1>
+    <h1 style="color:blue">Detalle de Álbum</h1>
     <table>
         <thead> 
             <tr>
                 <td>Id:</td>
-                <td>Album:</td>
+                <td>Álbum:</td>
                 <td>Artista:</td>
                 <td>Año de publicación:</td>
             </tr>
@@ -22,7 +22,7 @@
                 <td>{{ album.1 }}</td>
                 <td>{{ album.2 }}</td>
                 <td>{{ album.3 }}</td>
-                <td><a href="#">Actualizar</a></td>
+                <td><a href="{{ url_for('actualizar', id=album.0) }}">Actualizar</a></td>
                 <td><a href="#">Eliminar</a></td>
             </tr>
         </tbody>
