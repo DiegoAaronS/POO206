@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Formulario</h1>
-    <a href="/consulta">Abrir vista Consulta</a>
 
     <br>
     <br>
@@ -23,7 +22,7 @@
  
     <form action="/guardarAlbum" method="post">
 
-        <input type="text" name="txtTitulo" placeholder="Titulo" value="{{ request.form.txtTitulo}}"> <!--cajas de texto con nomnre y etiquetas -->
+        <input type="text" name="txtTitulo" placeholder="Titulo" value="{{ request.form.txtTitulo}}">
         {% if errores and errores.txtTitulo %}
             <p style="color: #ff0055;">{{errores.txtTitulo}}</p>
         {% endif %}

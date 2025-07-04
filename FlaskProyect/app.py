@@ -18,7 +18,7 @@ mysql = MySQL(app)
 def home():
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM tb_album')
+        cursor.execute('SELECT * FROM tb_album WHERE state=1')
         consultaTodo= cursor.fetchall()
         return render_template('formulario.html', errores={}, albums=consultaTodo)
     except Exception as e:
@@ -32,7 +32,7 @@ def home():
 def detalle(id):
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM tb_album WHERE id=%s',(id,))
+        cursor.execute('SELECT * FROM tb_album WHERE id=%s AND state=1', (id,))
         consultaId= cursor.fetchone()
         return render_template('consulta.html',album=consultaId)
     except Exception as e:
@@ -54,10 +54,18 @@ def actualizar(id):
     finally:
         cursor.close()
 
-#Ruta de consulta
-@app.route('/consulta')
-def consulta():
-    return render_template('consulta.html')
+@app.route('/eliminar/<int:id>')
+def eliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM tb_album WHERE id=%s AND state=1', (id,))
+        alb = cursor.fetchone()
+        return render_template('confirmDel.html', album=alb)
+    except Exception as e:
+          print('Álbum no encontrado: '+e)
+          return redirect(url_for('home')) 
+    finally:
+        cursor.close()
 
     #Ruta para el insert
 @app.route('/guardarAlbum', methods=['POST'])
@@ -129,6 +137,20 @@ def actualizarAlbum(id):
     finally:
         cursor.close()
 
+    return redirect(url_for('home'))
+
+@app.route('/confirmarEliminar/<int:id>', methods=['POST'])
+def confirmarEliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('UPDATE tb_album SET state = 0 WHERE id = %s', (id,))
+        mysql.connection.commit()
+        flash('Álbum eliminado en BD')
+    except Exception as e:
+        mysql.connection.rollback()
+        flash('Algo falló: ' + str(e))
+    finally:
+        cursor.close()
     return redirect(url_for('home'))
 
 #Ruta try-catch
