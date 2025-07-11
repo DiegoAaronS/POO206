@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+</head>
+<body>
+    <h1>Formulario</h1>
+
+    <br>
+    <br>
+    <br>
+
+         {% with mensajes= get_flashed_messages()%}
+            {% if mensajes%}
+                    {%for msj in mensajes %}
+                        <h4 style="color:blue">{{ msj }}</h4>
+                    {%endfor%}
+            {% endif %}
+         {% endwith%}
+ 
+    <form action="/guardarContacto" method="post">
+
+        <input type="text" name="txtNombre" placeholder="Nombre" value="{{ request.form.txtNombre}}">
+        {% if errores and errores.txtNombre %}
+            <p style="color: #ff0055;">{{errores.txtNombre}}</p>
+        {% endif %}
+
+        <input type="text" name="txtCorreo" placeholder="Correo" value="{{ request.form.txtCorreo}}">
+        {% if errores and errores.txtCorreo %}
+            <p style="color: #ff0055;">{{errores.txtCorreo}}</p>
+        {% endif %}
+
+        <input type="text" name="txtEdad" placeholder="Edad" value="{{ request.form.txtEdad}}">
+        {% if errores and errores.txtEdad %}
+            <p style="color: #ff0055;">{{errores.txtEdad}}</p>
+        {% endif %}
+
+        <button type="submit">Guardar Contacto</button>
+    </form>
+    <h1 style="color:blue">Contactos Guardados</h1>
+    <table>
+        <thead> 
+            <tr>
+                <td>Id:</td>
+                <td>Nombre:</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for con in contactos%}
+            <tr>
+                <td>{{ con.0 }}</td>
+                <td> <a href="/consulta/{{con.0}}">{{ con.1 }} </a> </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</body>
+</html>
